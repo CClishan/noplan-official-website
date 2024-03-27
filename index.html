@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="icon" href="./favicon.ico">
+    <link rel="stylesheet" type="text/css" href="./css/common.css?ver=20230906">
+    <link rel="stylesheet" type="text/css" href="./css/index.css?ver=20230906">
+    <title>noplan</title>
+    <script src="./js/jquery-1.10.2.min.js"></script>
+</head>
+<body style="opacity: 0">
+    <header class="header"></header>
+    <main class="container">
+      <div class="tags flex" id="tags">
+        <div class="tags-title"></div>
+        <div class="tags-list flex">
+        </div>
+      </div>
+        <div class="flex container-box" id="homeMain"></div>
+        <div class="get-more text-center" id="getMore">
+        
+        </div>
+    </main>
+    <footer class="footer"></footer>
+</body>
+<script src="./json/design-list.js?ver=20230906"></script>
+<script src="./js/common.js?ver=20230906"></script>
+<script src="./js/paging.js?ver=20230906"></script>
+<script>
+  document.getElementsByClassName('href-work')[0].classList.remove('active')
+
+  var pageSize = 9;
+  var tagStr = '', query = {}, hidnMoreDict = {
+    work: true,
+    tags: true
+  };
+  (window.location.search || '').slice(1).split('&').forEach(item => {
+    query[item.split('=')[0]] = item.split('=')[1]
+  })
+  // 首页逻辑，从当前列表中按顺序取出
+  // 标签页属性，取出当前标签中最新九条
+  var filterList = [], tags = [], total = 0
+  // 处理出所有的标签
+  designList.forEach(item => {
+    // if(item.tags) {
+    //   item.tags.forEach(tag => {
+    //     if(!tags.includes(tag)) {
+    //       tags.push(tag)
+    //     }
+    //   })
+    // }
+    var pushDesign = false
+    if(query.tag) {
+      if(item.tags && item.tags.includes(query.tag)) {
+        total++
+        pushDesign = true
+      }
+    } else {
+        total++
+        pushDesign = true
+    }
+    if(pushDesign) {
+      filterList.push(item)
+      
+    }
+  })
+  for (const key in tagsDict) {
+    if(key != query.tag) {
+    tagStr += `<a href="./index.html?tag=${key}">#${tagsDict[key] && tagsDict[key].title || key}</a>`
+      
+    }
+  }
+
+  showCard(filterList.slice(0, pageSize), tagsDict)
+  
+  if(query.tag) {
+    document.getElementById('tags').classList.add('tag-filter')
+    document.getElementsByClassName('tags-title')[0].innerHTML = `<div class="tag-title-text">#${tagsDict[query.tag].title || query.tag}</div>
+    <div class="bg" style="width:${tagsDict[query.tag]?.width || 200};background:${tagsDict[query.tag]?.color || ''}"><div>`
+    if(tagStr) {
+    document.getElementsByClassName('tags-list')[0].innerHTML = tagStr
+  }
+  }
+
+//console.log(total, pageSize)
+  if(total > pageSize) {
+    //console.log(122)
+    $("#getMore").paging({
+      pageNum:1,
+      totalNum: Math.ceil(total / pageSize),
+      totalList:total,
+      callback:function (num) {
+        $('.design-card').fadeOut(150)
+        setTimeout(() => {
+          $('html, body').animate({scrollTop: 0}, 500, function() {
+            showCard(filterList.slice(pageSize * (num - 1), pageSize * num), tagsDict)
+            setTimeout(() => {
+              animateLastIndex = -1
+              if(window.innerWidth && window.innerWidth < 769) {
+              scrollHandle(true)
+            }
+          })
+        })
+      }, 200)
+    } 
+  });
+
+}
+ 
+
+  if(query.target === 'work') {
+    // 是否高亮 work
+    document.getElementsByClassName('href-work')[0].classList.add('active')
+  } 
+
+  // vw < 769
+  var animateDelay = 300, animateLastIndex = -1, initScroll = false
+  if(window.innerWidth && window.innerWidth < 769) {
+    setTimeout(() => {
+      initScroll = true
+      scrollHandle(true)
+    }, 100)
+  }
+  window.onscroll = function () {
+    animateDelay = 0
+    scrollHandle()
+  }
+  function scrollHandle(init) {
+    var cardList = document.getElementsByClassName('design-card')
+    var scrollTop = (document.documentElement.scrollTop || document.body.scrollTop) + window.innerHeight
+    var offsetTop = 70
+    if(animateLastIndex > cardList.length || !initScroll) {
+      return
+    }
+    for (let i = 1; i < cardList.length; i++) {
+      if(i >= 1) {
+        offsetTop = cardList[i].offsetTop
+        if(offsetTop < scrollTop - 20) {
+          if(animateLastIndex < i) {
+            animateLastIndex = i
+            cardList[i].style.animation = 'none'
+            if(offsetTop < (document.documentElement.scrollTop || document.body.scrollTop)) {
+              // 屏幕之外的
+              cardList[i].style.animation = 'fadeInUp 0.6s linear forwards'
+            } else {
+              animateDelay += 300
+              setTimeout(() => {
+                cardList[i].style.animation = 'fadeInUp 0.6s linear forwards'
+              }, animateDelay)
+            }
+
+          }
+        } else if(init) {
+          cardList[i].style.animation = 'none'
+        }
+      }
+    }
+  }
+
+  function showCard (list, dict) {
+    var containerStr = '', noData = '<div class="no-data text-center" style="flex-basis: 100%; line-height: 100px;font-size: 32px">没有找到符合条件的设计</div>';
+    list.forEach(item => {
+      var tags = (item.tags || []).map(tItem => dict[tItem] && dict[tItem].title || tItem)
+      containerStr += `
+        <div class="design-card" data-id="${item.id}">
+          <a href="detail.html?id=${item.id}" target="_blank">
+            <div class="design-card-img">
+                <img src="${item.img || 'unknow'}" class="design-card-img-1">
+            </div>
+            <div class="design-card-title">${item.name}</div>
+            <div class="design-card-desc">${tags.join(' | ')}</div>
+          </a>
+        </div>
+      `
+    })
+    if(containerStr) {
+      containerStr += `
+          <div class="design-card"></div>
+          <div class="design-card"></div>
+          <div class="design-card"></div>
+    `
+      document.getElementById('homeMain').classList.remove('no-card')
+    } else {
+      containerStr += noData
+      document.getElementById('homeMain').classList.add('no-card')
+    }
+    document.getElementById('homeMain').innerHTML = containerStr
+    
+    $('.design-card-img-1').on('error', function() {
+    //console.log(111)
+    $(this).attr('src', './img/designImg/default-img.png')
+    $(this).parent().addClass('error-img')
+
+  })
+  }
+
+
+  setTimeout(() => {
+    $('html, body').animate({scrollTop: 0}, 100, function() {
+      $('body').css({opacity:1})
+    })
+  }, 400)
+
+ 
+</script>
+</html>

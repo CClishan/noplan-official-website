@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <link rel="icon" href="./favicon.ico" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./css/common.css?ver=20230906"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./css/detail.css?ver=20230906"
+    />
+    <title>noplan</title>
+    <script src="./js/jquery-1.10.2.min.js"></script>
+  </head>
+  <body style="opacity: 0">
+    <header class="header"></header>
+    <main class="container-2 detail-container">
+      <div class="container-info">
+        <div id="detailBox"></div>
+
+        <div class="usually-title more-title">More</div>
+        <div class="recommend animate-block" id="recommend"></div>
+      </div>
+    </main>
+
+    <footer class="footer"></footer>
+  </body>
+  <script src="./json/design-list.js?ver=20230906"></script>
+  <script src="./js/common.js?ver=20230906"></script>
+
+  <script>
+    function getDetail(url) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = url;
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+    const query = {};
+    (window.location.search || "")
+      .slice(1)
+      .split("&")
+      .forEach((item) => {
+        query[item.split("=")[0]] = item.split("=")[1];
+      });
+    const flag = designList.findIndex((item) => item.id == query.id);
+
+    getDetail(`json/designDetail/${query.id}.js`)
+      .then((res) => {
+        var detailStr = "";
+        if (detail) {
+          detail.forEach((item) => {
+            if (item.span == 1) {
+              detailStr += '<div class="flex-fill flex-block">';
+            } else if (item.span == 2) {
+              detailStr += `<div class="flex-half flex-block" type="${item.type}">`;
+            }
+
+            if (item.type === "image") {
+              if (item.list) {
+                item.list.forEach((img) => {
+                  detailStr += `<img src="${img}" width="100%" class="animate-block"/>`;
+                });
+              }
+            } else if (item.type === "text") {
+              if (item.list) {
+                item.list.forEach((textInfo) => {
+                  if (textInfo.type === "designSource") {
+                    detailStr += `
+                <div class="design-source animate-block">
+                  <div>
+                    <div class="design-source-name">${textInfo.name}</div>
+                    <div class="design-source-info">
+                      Date : ${textInfo.Date}<br/>
+                      Creative Director : ${textInfo.CreativeDirector} <br/>
+                      Designer: ${textInfo.Designer}<br/>
+                      Copyright: ${textInfo.Copyright}<br/>
+                    </div>
+                  </div>
+                  <div class="design-source-tags">
+                 
+                `;
+                    if (flag > -1 && designList[flag].tags) {
+                      designList[flag].tags.forEach((tag) => {
+                        detailStr += `
+                      <div class="design-source-tag">
+                        <a href="./index.html?tag=${tag}">
+                          #${(tagsDict[tag] && tagsDict[tag].title) || tag}
+                         </a>
+                      </div>
+                    `;
+                      });
+                    }
+                    detailStr += "</div></div>";
+                  } else if (textInfo.type === "designBI") {
+                    if (textInfo.setion) {
+                      detailStr += '<div class="design-bi animate-block"><div>';
+                      textInfo.setion.forEach((set) => {
+                        detailStr += `
+                      <p>${set}</p>
+                    `;
+                      });
+                      detailStr += "</div></div>";
+                    }
+                  }
+                });
+              }
+            }
+            detailStr += "</div>";
+          });
+        } else {
+          detailStr +=
+            '<div class="text-center usually-title"  style="line-height: 300px; font-size: 36px">没找到设计</div>';
+        }
+
+        document.getElementById("detailBox").innerHTML = detailStr;
+      })
+      .catch((err) => {
+        document.getElementById("detailBox").innerHTML =
+          '<div class="text-center usually-title" style="line-height: 300px; font-size: 36px">没找到设计</div>';
+      });
+
+    // 找到当前页面后三个页面，列表后面不足三个从第一个重新开始qu取值
+    var commend = flag > -1 ? designList.slice(flag + 1, flag + 4) : [];
+    if (commend.length < 3) {
+      commend = commend.concat(designList.slice(0, 3 - commend.length));
+    }
+    var containerStr = "";
+    commend.forEach((item) => {
+      const tags = (item.tags || []).map(
+        (tItem) => (tagsDict[tItem] && tagsDict[tItem].title) || tItem
+      );
+      containerStr += `
+        <div class="design-card" data-id="${item.id}">
+          <a href="detail.html?id=${item.id}" target="_blank">
+            <div class="design-card-img">
+              <img src="${item.img || "unknow"}" class="design-card-img-1">
+            </div>
+            <div class="design-card-title">${item.name}</div>
+            <div class="design-card-desc">${tags.join(" | ")}</div>
+          </a>
+        </div>
+      `;
+    });
+    document.getElementById("recommend").innerHTML = containerStr;
+    $(".design-card-img-1").on("error", function () {
+      //console.log(111)
+      $(this).attr("src", "./img/designImg/default-img.png");
+      $(this).parent().addClass("error-img");
+    });
+    var animateDelay = 300,
+      animateLastIndex = -1;
+    setTimeout(() => {
+      scrollHandle(true);
+      window.onscroll = function () {
+        animateDelay = 0;
+        scrollHandle();
+      };
+      window.onresize = function () {
+        animateDelay = 0;
+        scrollHandle();
+      };
+    }, 600);
+
+    function scrollHandle(init) {
+      var cardList = document.getElementsByClassName("animate-block");
+      var scrollTop =
+        (document.documentElement.scrollTop || document.body.scrollTop) +
+        window.innerHeight;
+      var offsetTop = 0;
+      if (animateLastIndex > cardList.length) {
+        return;
+      }
+      for (let i = 0; i < cardList.length; i++) {
+        if (i >= 0) {
+          offsetTop = cardList[i].offsetTop;
+          //console.log(193, i, offsetTop)
+          if (offsetTop < scrollTop - 20) {
+            //console.log(168, i)
+            if (animateLastIndex < i) {
+              animateLastIndex = i;
+              cardList[i].style.animation = "none";
+              if (
+                offsetTop <
+                (document.documentElement.scrollTop || document.body.scrollTop)
+              ) {
+                // 屏幕之外的
+                cardList[i].style.animation = "fadeInUp 0.4s linear forwards";
+              } else {
+                animateDelay += 300;
+                setTimeout(() => {
+                  cardList[i].style.animation = "fadeInUp 0.4s linear forwards";
+                }, animateDelay);
+              }
+            }
+          } else if (init) {
+            cardList[i].style.animation = "none";
+          }
+        }
+      }
+    }
+
+    setTimeout(() => {
+      $("html, body").animate({ scrollTop: 0 }, 100, function () {
+        $("body").css({ opacity: 1 });
+      });
+    }, 400);
+  </script>
+</html>

@@ -1,0 +1,138 @@
+.usually-desc-cn {
+  font-size: 16px;
+  font-family:  Montserrat-Light,Montserrat-Regular;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+.about-us {
+    margin-bottom: 1rem;
+}
+.about-us > div{
+    flex-basis: 50%;
+    max-width: 50%;
+}
+.about-us > div:nth-of-type(1) {
+  margin-right: 24px;
+}
+.about-us > div:nth-of-type(2) {
+  margin-left: 24px;
+}
+
+.about-us > div p {
+  margin-top: 0;
+  line-height: 30px;
+  margin-bottom: 40px;
+  color: #979797;
+  font-family:  Montserrat-Light;
+}
+.about-us > .usually-desc-en > p:last-child {
+    margin-bottom: 0px;
+}
+.about-us > .usually-desc-cn p {
+  color:#000;
+  line-height: 32px;
+}
+.team {
+    margin: 0 -24px;
+}
+.team .design-card {
+    margin: 0 24px 50px;
+    flex-basis: calc(100% / 3 - 48px);
+    opacity: 1;
+    animation: none;
+    cursor: initial;
+    
+}
+
+.team .design-card-title img {
+  width: 20px;
+  position: relative;
+  vertical-align: middle;
+}
+.team .design-card:hover .design-card-img img {
+  opacity: 1;
+}
+
+.team .design-card:empty{
+    margin-bottom: 0;
+}
+@media(max-width: 1440px) { 
+    .about-us > div p {
+      margin-top: 0;
+      margin-bottom: 30px;
+    }
+
+    .team .design-card {
+        margin: 0 24px 50px;
+        flex-basis: calc(100% / 3 - 48px);
+    }
+    
+}
+
+
+@media(max-width: 1280px) {
+    .team .design-card {
+        flex-basis: calc(100% / 2 - 48px);
+    }
+    
+
+}
+@media(max-width: 769px) {
+
+    .animate-block, .team .design-card.animate-block {
+      opacity: 0;
+    }
+    .team {
+      margin: 0 -6px;
+    }
+    .team .design-card {
+        flex-basis: calc(50% - 12px);
+        height: auto;
+        margin: 0 6px 20px;
+      opacity: 0;
+      animation-delay: 0;
+      animation: none;
+    }
+    .team .design-card .design-card-img {
+      margin-bottom: 10px;
+    }
+    .team .design-card .design-card-title {
+      font-size: 14px;
+      line-height: 18px;
+      
+    }
+    .team .design-card-title img {
+      width: 16px;
+    }
+    .team .design-card .design-card-desc {
+      font-size: 8px;
+      line-height: 1;
+    }
+    .about-us {
+      margin-bottom: 40px;
+    }
+    .about-us > div p {
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+    .about-us > .usually-desc-cn p {
+      line-height: 20px;
+    }
+    .about-us > .usually-desc-cn p:last-child {
+      margin-bottom: 0;
+    }
+    .about-us > div:nth-of-type(1) {
+      flex-basis: 100%;
+      max-width: none;
+      margin: 0;
+    }
+    .about-us > div:last-child {
+      display: none;
+
+    }
+    .usually-desc-cn {
+      font-size: 12px;
+      line-height: 20px;
+    }
+}

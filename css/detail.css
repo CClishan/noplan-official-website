@@ -1,0 +1,219 @@
+.detail-container > .container-info {
+}
+.animate-block {
+  opacity: 0;
+}
+.flex-block {
+  margin-bottom: 0.52rem;
+}
+
+#detailBox {
+  min-height: 80vh;
+  margin-bottom: 1rem;
+}
+.flex-half {
+  display: flex;
+}
+.flex-half[type='image'] {
+  align-items: center;
+}
+.flex-fill > *:nth-child(n + 2), .flex-half > *:nth-child(n + 3) {
+  margin-top: 0.5rem;
+}
+.flex-half > * {
+  flex-basis: calc(50% - 12px);
+  width: calc(50% - 12px);
+}
+.flex-half > *:first-child {
+  margin-right: 12px;
+}
+.flex-half > *:last-child {
+  margin-left: 12px;
+}
+.design-source {
+  min-height: 228px;
+  position: relative;
+  /* padding-bottom: 90px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.design-source-tags {
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+}
+.design-source-tag {
+  background: #FFFFFF;
+  border-radius: 3px;
+  border: 1px solid #D6D6D6;
+  line-height: 20px;
+  padding: 6px 16px;
+  display: inline-block;
+  margin-right: 24px;
+  margin-bottom: 8px;
+  min-width: 180px;
+}
+.design-source-tag:last-child {
+  margin-right: 0;
+}
+.design-source-name {
+  font-size: 30px;
+  font-family: Montserr-SemiBold-Regular, Montserrat-SemiBold;
+  font-weight: 400;
+  line-height: 26px;
+  margin-bottom: 16px;
+}
+.design-source-info {
+  font-size: 16px;
+  font-family: Montserrat-Regular;
+  font-weight: 400;
+  line-height: 32px;
+}
+.design-bi {
+  padding-top: 45px;
+  font-size: 18px;
+  font-family: Montserrat-Regular, Montserrat;
+  line-height: 32px;
+
+}
+.design-bi > div {
+  max-height: 300px;
+  overflow: auto;
+}
+.design-bi p {
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+.design-bi p:last-of-type {
+  margin-bottom: 10px;
+}
+.more-title {
+  margin-top: calc(1rem - 0.48rem);
+}
+#recommend {
+  margin: 0px -20px 50px;
+  display: flex;
+  flex-wrap: wrap;
+}
+#recommend .design-card {
+  margin: 0 20px 40px;
+  flex-basis: calc(100% / 3 - 40px);
+  max-width: calc(100% / 3 - 40px);
+}
+@media (max-width: 1440px) {
+  
+  .design-source-name {
+    font-size: 20px;
+    line-height: 26px;
+    margin-bottom: 10px;
+  }
+  .design-source-info {
+    font-size: 14px;
+    line-height: 24px;
+  }
+  .design-bi {
+    padding-top: 40px;
+    font-size: 16px;
+    line-height: 26px;
+  }
+  .design-bi p {
+    margin-bottom: 30px;
+  }
+  #recommend {
+    margin: 0px -20px 0.68rem;
+  }
+  #recommend .design-card {
+    /* flex-basis: calc(100% / 2 - 40px);
+    max-width: calc(100% / 2 - 40px); */
+    min-width: 300px;
+  }
+
+}
+@media (max-width: 769px) {
+  .container-2.detail-container {
+    padding-top: 0;
+  }
+  #detailBox {
+    margin-bottom: 20px;
+  }
+  .detail-container > .container-info {
+    width: 100%;
+  }
+  .flex-block {
+    margin-bottom: 20px;
+  }
+  .flex-block:nth-of-type(n + 2) {
+    margin: 0 30px 20px;
+  }
+  .design-source-tags {
+    position: absolute;
+    left: 0;
+    bottom: 12px;
+  }
+ .design-source-tag {
+  font-size: 10px;
+  line-height: 12px;
+  padding: 6px;
+  min-width: 125px;
+}
+  .design-source-name {
+    font-size: 16px;
+    line-height: 19px;
+    margin-top: 4px;
+    margin-bottom: 9px;
+  }
+  .design-source-info, .design-bi {
+    font-size: 10px;
+    line-height: 16px;
+  }
+  .design-bi {
+    padding-top: 8px;
+    padding-bottom: 20px;
+  }
+  .design-bi p {
+    margin-bottom: 20px;
+  }
+  .flex-half[type='image'] {
+    flex-wrap: wrap;
+  }
+  .flex-half[type='image'] > * {
+    flex-basis: 100%;
+  }
+  .flex-half[type='image'] > *:first-child {
+    margin-right: 0;
+  }
+  .flex-half[type='image'] > *:last-child {
+    margin-left: 0;
+  }
+  .flex-fill > *:nth-child(n + 2), .flex-half > *:nth-child(n + 2) {
+    margin-top: 20px;
+  }
+  .more-title {
+    margin: 0 30px 20px;
+  }
+  #recommend {
+    margin: 0px 20px 4px;
+  }
+  #recommend .design-card {
+    flex-basis: calc(50% - 20px);
+    max-width: calc(50% - 20px);
+    margin: 0 10px 20px;
+    min-width: auto;
+  }
+  #recommend .design-card:nth-of-type(3 ) {
+    display: none;
+  }
+  #recommend .design-card .design-card-title {
+    line-height: 14px;
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+  #recommend .design-card .design-card-desc {
+    line-height: 12px;
+    font-size: 10px;
+  }
+
+
+}
+
