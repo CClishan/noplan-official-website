@@ -96,7 +96,6 @@ if (document.getElementsByClassName("footer")) {
       <div>
           <div class="footer-box-title">CONNET</div>
           <div class="footer-address-en regular-text">
-              Wechat: eyespanoplan<br> Phone: 18824125493 <br>Email: joe@noplan.design <br>Redbook: NOPLAN STUDIO
           </div>
       </div>
 
@@ -121,7 +120,6 @@ if (document.getElementsByClassName("footer")) {
     </div>
   </div>
   <p class="text-center regular-text">
-  <a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2022008788号-1</a>丨 Noplan Design &copy;️2023. All copyrights reserviced.</p>
   `;
   document.getElementsByClassName("footer")[0].innerHTML = footerStr;
 }
