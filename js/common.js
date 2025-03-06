@@ -96,6 +96,7 @@ if (document.getElementsByClassName("footer")) {
       <div>
           <div class="footer-box-title">CONNET</div>
           <div class="footer-address-en regular-text">
+              Wechat: koroo000<br> Phone: 15006023459 <br>Email: koroo@noplan.design <br>Redbook: NOPLAN STUDIO
           </div>
       </div>
 
@@ -120,6 +121,7 @@ if (document.getElementsByClassName("footer")) {
     </div>
   </div>
   <p class="text-center regular-text">
+  <a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2023014891号-4</a>丨 PixLoad Design &copy;️2024. All copyrights reserviced.</p>
   `;
   document.getElementsByClassName("footer")[0].innerHTML = footerStr;
 }
